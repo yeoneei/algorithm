@@ -7,12 +7,11 @@
 //
 
 #include <iostream>
-#include <queue>
+#include <stack>
 using namespace std;
-priority_queue<int> pq;
 int n;
 int input[1000000];
-int output[1000000];
+stack<int>
 int main(){
     ios_base :: sync_with_stdio(false);
     cin.tie(NULL);

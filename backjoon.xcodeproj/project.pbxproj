@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A600C05523B0F60400A073CF /* 3074.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A600C05423B0F60400A073CF /* 3074.cpp */; };
+		A600C05723B1EA5600A073CF /* 1824.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A600C05623B1EA5600A073CF /* 1824.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +31,7 @@
 		A600C04D23B0991D00A073CF /* 10799.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 10799.cpp; sourceTree = "<group>"; };
 		A600C04F23B0A46800A073CF /* 17298.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 17298.cpp; sourceTree = "<group>"; };
 		A600C05423B0F60400A073CF /* 3074.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 3074.cpp; sourceTree = "<group>"; };
+		A600C05623B1EA5600A073CF /* 1824.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 1824.cpp; sourceTree = "<group>"; };
 		A616CB9C22F5E3F900CA4475 /* 15663.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 15663.cpp; sourceTree = "<group>"; };
 		A616CBB423019FC800CA4475 /* 2798.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 2798.cpp; sourceTree = "<group>"; };
 		A616CBB62301A60E00CA4475 /* 2231.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = 2231.cpp; sourceTree = "<group>"; };
@@ -174,18 +175,19 @@
 			path = SDS;
 			sourceTree = "<group>";
 		};
-		A600C05323B0F5B900A073CF /* New Group */ = {
+		A600C05323B0F5B900A073CF /* SWEA */ = {
 			isa = PBXGroup;
 			children = (
 				A600C05423B0F60400A073CF /* 3074.cpp */,
+				A600C05623B1EA5600A073CF /* 1824.cpp */,
 			);
-			path = "New Group";
+			path = SWEA;
 			sourceTree = "<group>";
 		};
 		A6B13AC42244E1B000D85020 = {
 			isa = PBXGroup;
 			children = (
-				A600C05323B0F5B900A073CF /* New Group */,
+				A600C05323B0F5B900A073CF /* SWEA */,
 				A600C02723AF699600A073CF /* SDS */,
 				A600C02623AF697900A073CF /* shCard */,
 				A6B13ACF2244E1B000D85020 /* backjoon */,
@@ -375,7 +377,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A600C05523B0F60400A073CF /* 3074.cpp in Sources */,
+				A600C05723B1EA5600A073CF /* 1824.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

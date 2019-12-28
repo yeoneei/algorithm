@@ -1,18 +1,11 @@
-//
-//  1767.cpp
-//  backjoon
-//
-//  Created by 조연희 on 25/12/2019.
-//  Copyright © 2019 조연희. All rights reserved.
-//
-
 #include <iostream>
 #include <queue>
+#include <vector>
 #include <stdio.h>
-#define MAX 13
+#define MAX 14
 using namespace std;
 int T,n;
-bool map[MAX][MAX];
+int map[MAX][MAX];
 struct Node{
     int y;
     int x;
@@ -34,25 +27,25 @@ struct Cmp{
     }
 };
 
-queue<Node> qu;
+vector<Node> in;
 priority_queue<Node, vector<Node>,Cmp> pq;
 
-int checkScore(bool map[][MAX]){
+int checkScore(int map[][MAX]){
     int result=0;
     for(int i=0; i<n;i++){
         for(int j=0; j<n;j++){
-            if(map[i][j]){
+            if(map[i][j]==1){
                 result++;
             }
         }
     }
-    return result-n;
+    return result;
 }
 
 int dx[4]={1,-1,0,0};
 int dy[4]={0,0,1,-1};
 
-void dfs(queue<Node> qu, bool map[][MAX]){
+void dfs(queue<Node> qu, int map[][MAX]){
     if(qu.empty()){
         return;
     }
@@ -60,7 +53,7 @@ void dfs(queue<Node> qu, bool map[][MAX]){
     int y = qu.front().y;
     int x = qu.front().x;
     qu.pop();
-    bool copy[MAX][MAX];
+    int copy[MAX][MAX];
     for(int i=0; i<4;i++){
         for(int j=0; j<n;j++){
             for(int k=0; k<n;k++){
@@ -76,7 +69,7 @@ void dfs(queue<Node> qu, bool map[][MAX]){
             if(ny<0 || ny>=n ||nx<0 || nx>=n){
                 break;
             }
-            if(copy[ny][nx]){
+            if(copy[ny][nx] || copy[ny][nx]==2){
                 check = false;
                 break;
             }
@@ -90,19 +83,16 @@ void dfs(queue<Node> qu, bool map[][MAX]){
     }
 }
 
+
 void init(){
-    while(!qu.empty()){
-        qu.pop();
+    while(!in.empty()){
+        in.pop_back();
     }
     while(!pq.empty()){
         pq.pop();
     }
 }
-
 int main(){
-    ios_base :: sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
     cin>>T;
     for(int t=1; t<=T;t++){
         cin>>n;
@@ -112,15 +102,25 @@ int main(){
                 cin>>map[i][j];
                 if(map[i][j]){
                     if(i!=0 || j!=0 || i!=n-1 || j!=n-1){
-                        qu.push(Node(i,j));
+                        in.push_back(Node(i,j));
                     }
+                    map[i][j]=2;
                 }
             }
         }
+        queue<Node> qu;
+        do{
+            for(int i=0; i<in.size();i++){
+                qu.push(in[i]);
+            }
+            dfs(qu,map);
+            while(!qu.empty()){
+                qu.pop();
+            }
+        }while(next_permutation(in.begin(),in.end()));
         
         dfs(qu,map);
         printf("#%d %d \n",t,pq.top().x);
         
     }
-    
 }

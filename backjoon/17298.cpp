@@ -10,8 +10,9 @@
 #include <stack>
 using namespace std;
 int n;
-int input[1000000];
-stack<int>
+int in[1000000];
+int out[1000000];
+stack<int> st;
 int main(){
     ios_base :: sync_with_stdio(false);
     cin.tie(NULL);
@@ -19,10 +20,24 @@ int main(){
     
     cin>>n;
     for(int i=0; i<n;i++){
-        cin>>input[i];
+        cin>>in[i];
+        while(!st.empty()){
+            int temp = st.top();
+            if(in[temp]<in[i]){
+                out[temp]=in[i];
+                st.pop();
+            }else{
+                break;
+            }
+        }
+        st.push(i);
     }
-    
-    
-    
+    while(!st.empty()){
+        out[st.top()]=-1;
+        st.pop();
+    }
+    for(int i=0; i<n;i++){
+        cout<<out[i]<<' ';
+    }
 }
 

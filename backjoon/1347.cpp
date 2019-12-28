@@ -1,52 +1,64 @@
+//
+//  1347.cpp
+//  backjoon
+//
+//  Created by 조연희 on 28/12/2019.
+//  Copyright © 2019 조연희. All rights reserved.
+//
 
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
+#define MAX 100
 using namespace std;
 
-int N;
-bool map[101][101];
-int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, -1, 0, 1};
+char map[MAX][MAX];
+int y=50;
+int x=50;
+int dx[4]={0,-1,0,1};
+int dy[4]={1,0,-1,0};
+int dir=0;
+int sY=50;
+int sX=50;
+int eY=50;
+int eX=50;
 
-int main()
-{
-    cin >> N;
-    
-    string str;
-    cin >> str;
-    
-    int dir = 0;
-    int cx = 50, cy = 50;
-    int sx = cx, sy = cy, ex = cx, ey = cy;
-    
-    map[cx][cy] = true;;
-    
-    for (int j = 0; j < N; j++)
-    {
-        if (str[j] == 'L') dir = (dir + 3) % 4;
-        else if (str[j] == 'R') dir = (dir + 1) % 4;
-        else if (str[j] == 'F')
-        {
-            cx += dx[dir];
-            cy += dy[dir];
-            map[cx][cy] = true;
-            
-            if (cx < sx) sx = cx;
-            if (cy < sy) sy = cy;
-            if (cx > ex) ex = cx;
-            if (cy > ey) ey = cy;
+string temp;
+int n;
+
+int main(){
+    cin>>n;
+    cin.ignore();
+    getline(cin,temp);
+    map[y][x]='.';
+    for(int i=0; i<n;i++){
+        if(temp[i]=='R'){
+            dir++;
+            dir%=4;
+        }
+        if(temp[i]=='L'){
+            dir--;
+            dir =(dir<0?dir+4:dir);
+        }
+        if(temp[i]=='F'){
+            x+=dx[dir];
+            y+=dy[dir];
+            map[y][x]='.';
+            sX = (sX>x?x:sX);
+            sY = (sY>y?y:sY);
+            eX = (eX<x?x:eX);
+            eY = (eY<y?y:eY);
         }
     }
     
-    for (int i = sx; i <= ex; i++)
-    {
-        for (int j = sy; j <= ey; j++)
-        {
-            if(map[i][j]) cout << '.';
-            else cout << '#';
+    for(int i=sY; i<=eY;i++){
+        for(int j=sX;j<=eX;j++){
+            if(map[i][j]=='.'){
+                cout<<'.';
+            }else{
+                cout<<'#';
+            }
         }
-        cout << '\n';
+        cout<<'\n';
     }
-    
-    return 0;
 }
+

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <queue>
-#include <vector>
 #include <stdio.h>
 #define MAX 14
 using namespace std;
@@ -27,7 +26,7 @@ struct Cmp{
     }
 };
 
-vector<Node> in;
+queue<Node> qu;
 priority_queue<Node, vector<Node>,Cmp> pq;
 
 int checkScore(int map[][MAX]){
@@ -83,15 +82,15 @@ void dfs(queue<Node> qu, int map[][MAX]){
     }
 }
 
-
 void init(){
-    while(!in.empty()){
-        in.pop_back();
+    while(!qu.empty()){
+        qu.pop();
     }
     while(!pq.empty()){
         pq.pop();
     }
 }
+
 int main(){
     cin>>T;
     for(int t=1; t<=T;t++){
@@ -102,25 +101,16 @@ int main(){
                 cin>>map[i][j];
                 if(map[i][j]){
                     if(i!=0 || j!=0 || i!=n-1 || j!=n-1){
-                        in.push_back(Node(i,j));
+                        qu.push(Node(i,j));
                     }
                     map[i][j]=2;
                 }
             }
         }
-        queue<Node> qu;
-        do{
-            for(int i=0; i<in.size();i++){
-                qu.push(in[i]);
-            }
-            dfs(qu,map);
-            while(!qu.empty()){
-                qu.pop();
-            }
-        }while(next_permutation(in.begin(),in.end()));
         
         dfs(qu,map);
         printf("#%d %d \n",t,pq.top().x);
         
     }
 }
+

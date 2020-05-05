@@ -2,84 +2,121 @@
 //  1824.cpp
 //  backjoon
 //
-//  Created by 조연희 on 24/12/2019.
-//  Copyright © 2019 조연희. All rights reserved.
+//  Created by 조연희 on 19/04/2020.
+//  Copyright © 2020 조연희. All rights reserved.
 //
 
 #include <iostream>
 #include <string.h>
-#define MAX 21
+#include <queue>
 using namespace std;
 
-char map[MAX][MAX];
-bool check[MAX][MAX][4][16];
-
+int T,n,m;
+char map[20][20];
+int check[16][20][20];
 int dx[4]={1,-1,0,0};
 int dy[4]={0,0,1,-1};
 
-int T,n,m;
-bool endLoop=false;
-void dfs(int curX, int curY, int dir, int mem){
-    while(!endLoop){
-        
-        if(check[curY][curX][dir][mem]==true){
-            return;
-        }
-        char temp = map[curY][curX];
-        check[curY][curX][dir][mem]=true;
-        if(temp=='<') dir = 1;
-        else if(temp=='>') dir=0;
-        else if(temp=='v') dir=2;
-        else if(temp=='^') dir=3;
-        else if(temp=='+') mem = (mem==15?0:mem+1);
-        else if(temp=='-') mem = (mem==0?15:mem-1);
-        else if(temp=='@') {
-            endLoop=true;
-            return;
-        }else if('0'<=temp && temp<='9') mem = temp-'0';
-        else if(temp=='_') dir = (mem==0?0:1);
-        else if(temp=='|') dir = (mem==0? 2:3);
-        else if(temp=='?'){
-            for(int i=0; i<4;i++){
-                int nx = curX+dx[i];
-                int ny = curY+dy[i];
-                nx = (nx==m?0:nx);
-                nx = (nx<0?m-1:nx);
-                ny = ny==n?0:ny;
-                ny = ny<0?n-1:ny;
-                if(!check[ny][nx][i][mem]){
-                    dfs(nx,ny,i,mem);
-                }
-                
-            }
-            return;
-        }
-        curX+=dx[dir];
-        curY+=dy[dir];
-        curX = curX==m?0:curX;
-        curX = curX<0?m-1:curX;
-        curY = curY==n?0:curY;
-        curY = curY<0?n-1:curY;
-        
-    }
-}
+int endX;
+int endY;
+
+struct Node{
+    int y;
+    int x;
+    int mem;
+    int d;
+    Node(int y,int x, int mem,int d):y(y),x(x),mem(mem),d(d){}
+};
+
 int main(){
-    scanf("%d", &T);
-    for(int t=1; t<=T;t++){
-        endLoop=false;
-        scanf("%d %d",&n,&m);
-        memset(check,false,sizeof(check));
+    cin>>T;
+    for(int tc=1; tc<=T; tc++){
+        cin>>n>>m;
+        memset(check,0,sizeof(check));
+        endX=-1;
+        endY=-1;
         for(int i=0; i<n;i++){
-            for(int j=0;j<m;j++){
-                scanf(" %c",&map[i][j]);
+            for(int j=0; j<m;j++){
+                cin>>map[i][j];
+                if(map[i][j]=='@'){
+                    endY=i;
+                    endX=j;
+                }
             }
         }
-        dfs(0,0,0,0);
-        printf("#%d ",t);
-        if(endLoop){
-            printf("YES \n");
-        }else {
-            printf("NO \n");
+        bool ans=false;
+        queue<Node> qu;
+        qu.push(Node(0,0,0,0));
+
+        while(!qu.empty()){
+            int y = qu.front().y;
+            int x = qu.front().x;
+            int d = qu.front().d;
+            int mem = qu.front().mem;
+            qu.pop();
+            
+            cout<<map[y][x]<<" "<<mem<<endl;
+            if(map[y][x]=='<')d=1;
+            else if(map[y][x]=='>')d=0;
+            else if(map[y][x]=='^')d=3;
+            else if(map[y][x]=='v')d=2;
+            else if(map[y][x]=='_'){
+                if(mem==0)d=0;
+                else d=1;
+            }else if(map[y][x]=='|'){
+                if(mem==0)d=2;
+                else d=3;
+            }else if(map[y][x]=='@'){
+                ans = true;
+                break;
+            }else if(map[y][x]=='+'){
+                mem++;
+                if(mem>15)mem=0;;
+            }else if(map[y][x]=='-'){
+                mem--;
+                if(mem<0)mem=15;
+            }else if(map[y][x]>='0' && map[y][x]<='9'){
+                mem = (int)(map[y][x]-'0');
+            }else if(map[y][x]=='?'){
+                for(int i=0; i<4;i++){
+                    if((check[mem][y][x]&(1<<i)) == (1<<i)){
+                        continue;
+                    }
+                    check[mem][y][x]+=(1<<i);
+                    int ny = y+dy[i];
+                    int nx = x+dx[i];
+                    if(nx<0 || nx>=m || ny<0 || ny>=n){
+                        nx = nx<0?nx+m:nx;
+                        nx = nx>=m?nx-m:nx;
+                        ny = ny<0?ny+n:ny;
+                        ny = ny>=n?ny-n:ny;
+                    }
+                    qu.push(Node(ny,nx,mem,i));
+                }
+                continue;
+            }
+            
+            if((check[mem][y][x]&(1<<d)) == (1<<d)){
+                continue;
+            }
+            
+            check[mem][y][x]+=(1<<d);
+            y +=dy[d];
+            x +=dx[d];
+            if(x<0 || x>=m || y<0 || y>=n){
+                x = x<0?x+m:x;
+                x = x>=m?x-m:x;
+                y = y<0?y+n:y;
+                y = y>=n?y-n:y;
+            }
+            qu.push(Node(y,x,mem,d));
+        }
+        
+        cout<<"#"<<tc<<" ";
+        if(ans){
+            cout<<"YES"<<'\n';
+        }else{
+            cout<<"NO"<<'\n';
         }
     }
 }

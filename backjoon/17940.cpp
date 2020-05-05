@@ -1,3 +1,5 @@
+//bfs로 풀어라
+
 #include <iostream>
 #include <queue>
 #define N 1000
